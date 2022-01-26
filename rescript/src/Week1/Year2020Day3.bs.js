@@ -2,10 +2,133 @@
 'use strict';
 
 var Fs = require("fs");
+var Belt_Array = require("rescript/lib/js/belt_Array.js");
+var Caml_array = require("rescript/lib/js/caml_array.js");
+var Caml_int32 = require("rescript/lib/js/caml_int32.js");
 
-var input = Fs.readFileSync("input/Week1/Year2020Day3.sample.txt", "utf8");
+var text = Fs.readFileSync("input/Week1/Year2020Day3.txt", "utf8");
 
-console.log(input);
+var qArray = text.split("\n");
 
-exports.input = input;
-/* input Not a pure module */
+var moveArray = [
+  [
+    1,
+    1
+  ],
+  [
+    3,
+    1
+  ],
+  [
+    5,
+    1
+  ],
+  [
+    7,
+    1
+  ],
+  [
+    1,
+    2
+  ]
+];
+
+var num = Caml_array.get(qArray, 0).length;
+
+var tempX = {
+  contents: 0
+};
+
+var totalString = {
+  contents: Caml_array.get(qArray, 0) + "\n"
+};
+
+var count = {
+  contents: 0.0
+};
+
+var countArray = [];
+
+function question(part) {
+  switch (part) {
+    case "Part1" :
+        console.log("---------- 파트 1 ----------");
+        for(var i = 1 ,i_finish = qArray.length; i < i_finish; ++i){
+          if (Caml_int32.mod_(i, Caml_array.get(Caml_array.get(moveArray, 1), 1)) === 0) {
+            tempX.contents = tempX.contents + Caml_array.get(Caml_array.get(moveArray, 1), 0) | 0;
+            if (tempX.contents > (num - 1 | 0)) {
+              tempX.contents = tempX.contents - num | 0;
+            } else {
+              tempX.contents = tempX.contents;
+            }
+            var s = {
+              contents: Caml_array.get(qArray, i)
+            };
+            var match = s.contents.substr(tempX.contents, 1);
+            switch (match) {
+              case "#" :
+                  s.contents = s.contents.substr(0, tempX.contents) + "X" + s.contents.substr(tempX.contents + 1 | 0, num);
+                  count.contents = count.contents + 1.0;
+                  break;
+              case "." :
+                  s.contents = s.contents.substr(0, tempX.contents) + "O" + s.contents.substr(tempX.contents + 1 | 0, num);
+                  break;
+              default:
+                console.log(s);
+            }
+            Caml_array.set(qArray, i, s.contents);
+          }
+          totalString.contents = totalString.contents + Caml_array.get(qArray, i) + "\n";
+        }
+        console.log(totalString.contents);
+        console.log("답은 " + count.contents.toString() + " 개 입니다.");
+        return ;
+    case "Part2" :
+        console.log("---------- 파트 2 ----------");
+        for(var j = 0 ,j_finish = moveArray.length; j < j_finish; ++j){
+          for(var i$1 = 1 ,i_finish$1 = qArray.length; i$1 < i_finish$1; ++i$1){
+            var match$1 = Caml_int32.mod_(i$1, Caml_array.get(Caml_array.get(moveArray, j), 1));
+            if (match$1 !== 0) {
+              
+            } else {
+              tempX.contents = tempX.contents + Caml_array.get(Caml_array.get(moveArray, j), 0) | 0;
+              if (tempX.contents > (num - 1 | 0)) {
+                tempX.contents = tempX.contents - num | 0;
+              }
+              if (Caml_array.get(qArray, i$1).substr(tempX.contents, 1) === "#") {
+                count.contents = count.contents + 1.0;
+              }
+              
+            }
+          }
+          tempX.contents = 0;
+          countArray.push(count.contents);
+          count.contents = 0.0;
+        }
+        console.log(countArray);
+        count.contents = Belt_Array.reduce(countArray, 1.0, (function (a, b) {
+                return a * b;
+              }));
+        console.log("답은 " + count.contents.toString() + " 개 입니다.");
+        return ;
+    default:
+      console.log("etcPart");
+      return ;
+  }
+}
+
+question("Part1");
+
+var tempArray = qArray;
+
+exports.text = text;
+exports.qArray = qArray;
+exports.moveArray = moveArray;
+exports.num = num;
+exports.tempX = tempX;
+exports.tempArray = tempArray;
+exports.totalString = totalString;
+exports.count = count;
+exports.countArray = countArray;
+exports.question = question;
+/* text Not a pure module */
