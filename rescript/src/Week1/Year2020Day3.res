@@ -55,8 +55,7 @@ let question = part => {
           if Js.String2.substrAtMost(qArray[i], ~from=tempX.contents, ~length=1) === "#" {
             count := count.contents +. 1.0
           }
-        | _ =>
-          let _ = `null`
+        | _ => ()
         }
       }
       tempX := 0
