@@ -11,6 +11,10 @@ let totalString = ref(tempArray[0] ++ "\n")
 let count = ref(0.0) // X 개수가 몇개인지 카운트
 let countArray = [] // -> 파트 2 에서 사용
 
+let input = Js.String.split("\n", Node.Fs.readFileAsUtf8Sync("input/Week1/Year2020Day3.txt"))
+let result = input->Belt.Array.map(group => group)
+Js.log(result)
+
 let question = part => {
   switch part {
   | "Part1" =>

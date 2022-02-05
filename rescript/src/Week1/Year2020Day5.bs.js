@@ -24,10 +24,6 @@ var seatID = {
 
 var seatArray = [];
 
-function makeSeatArray(seat) {
-  return seatArray.push(seat);
-}
-
 function makeMinMax(code) {
   var exit = 0;
   switch (code) {
@@ -91,16 +87,12 @@ function part_two(qArray) {
 
 part_two(qArray);
 
-var answer = 0;
-
 exports.text = text;
 exports.qArray = qArray;
-exports.answer = answer;
 exports.min = min;
 exports.max = max;
 exports.seatID = seatID;
 exports.seatArray = seatArray;
-exports.makeSeatArray = makeSeatArray;
 exports.makeMinMax = makeMinMax;
 exports.makeSeatID = makeSeatID;
 exports.part_one = part_one;

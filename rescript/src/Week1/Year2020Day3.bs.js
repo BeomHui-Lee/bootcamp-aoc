@@ -49,6 +49,14 @@ var count = {
 
 var countArray = [];
 
+var input = Fs.readFileSync("input/Week1/Year2020Day3.txt", "utf8").split("\n");
+
+var result = Belt_Array.map(input, (function (group) {
+        return group;
+      }));
+
+console.log(result);
+
 function question(part) {
   switch (part) {
     case "Part1" :
@@ -130,5 +138,7 @@ exports.tempArray = tempArray;
 exports.totalString = totalString;
 exports.count = count;
 exports.countArray = countArray;
+exports.input = input;
+exports.result = result;
 exports.question = question;
 /* text Not a pure module */
