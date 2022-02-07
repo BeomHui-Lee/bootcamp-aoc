@@ -8,24 +8,36 @@ var Belt_SetString = require("rescript/lib/js/belt_SetString.js");
 
 var text = Fs.readFileSync("input/Week1/Year2020Day6.txt", "utf8");
 
+function plus(x, y) {
+  return x + y | 0;
+}
+
 function sum(xs) {
   return Belt_Array.reduce(xs, 0, (function (total, curr) {
                 return total + curr | 0;
               }));
 }
 
+function mult(xs) {
+  return Belt_Array.reduce(xs, 1, (function (total, curr) {
+                return Math.imul(total, curr);
+              }));
+}
+
 var initSet = Belt_SetString.fromArray("abcdefghijklmnopqrstuvwxyz".split(""));
 
-function multiLineToSet(str) {
-  return Belt_SetString.fromArray(Belt_Array.concatMany(Belt_Array.map(str.split("\n"), (function (s) {
+function f(str, init, op) {
+  return Belt_Array.reduce(Belt_Array.map(Belt_Array.map(str.split("\n"), (function (s) {
                         return s.split("");
-                      }))));
+                      })), Belt_SetString.fromArray), init, Curry.__2(op));
+}
+
+function multiLineToSet(str) {
+  return f(str, Belt_SetString.fromArray([]), Belt_SetString.union);
 }
 
 function multiLineToSet2(str) {
-  return Belt_Array.reduce(Belt_Array.map(Belt_Array.map(str.split("\n"), (function (s) {
-                        return s.split("");
-                      })), Belt_SetString.fromArray), initSet, Belt_SetString.intersect);
+  return f(str, initSet, Belt_SetString.intersect);
 }
 
 function allToGroup(str) {
@@ -33,7 +45,7 @@ function allToGroup(str) {
 }
 
 function program(input, f) {
-  return sum(Belt_Array.map(Belt_Array.map(input.split("\n\n"), Curry.__1(f)), Belt_SetString.size));
+  return sum(Belt_Array.map(Belt_Array.map(input.split("\n\n"), f), Belt_SetString.size));
 }
 
 function part1(input) {
@@ -51,8 +63,11 @@ part1(text);
 part2(text);
 
 exports.text = text;
+exports.plus = plus;
 exports.sum = sum;
+exports.mult = mult;
 exports.initSet = initSet;
+exports.f = f;
 exports.multiLineToSet = multiLineToSet;
 exports.multiLineToSet2 = multiLineToSet2;
 exports.allToGroup = allToGroup;
