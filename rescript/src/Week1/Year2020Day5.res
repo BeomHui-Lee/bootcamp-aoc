@@ -49,41 +49,58 @@ let part_two = qArray => {
 
 // ----- 실행 -----
 // part_one(qArray)
-part_two(qArray)
+// part_two(qArray)
 
-// ----- 변경 예정 파트 1 -----
-// seatArray 의 최대값을 반환하며 종료 ->
-// seatArray 를 만드는 함수 ->
-// seatArray의 인자 seat를 만드는 함수 ->
-// seat를 구하기 위해 min,max를 계산하는 함수 ->
-// min,max를 구하기 위해 qArray의 한 요소(한 문장)를 순회 하는 함수 ->
-// qArray의 한 문장을 순회하며 한 문자를 판별 하는 함수
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+let part2 = arr => {
+  let firstSeat = arr[0] - 1
+  arr->Belt.Array.reduce(firstSeat, (prev, next) => {
+    switch next === prev + 1 {
+    | true => prev + 1
+    | false => prev
+    }
+  }) + 1
+}
 
-// qArray 의 배열을 map 을 이용해 seatId 로 변환된 배열로 바꿔줌
-// let tempArr = []
+let part1 = arr => {
+  arr[Belt.Array.length(arr) - 1]
+}
 
-// let makeSeatArray = oneOf_qArray => {
-//   // 인자로 배열의 한 문장이 들어옴
-//   // 한문장을 seatID 로 전환해야함
-//   for i in 0 to Js.String2.length(oneOf_qArray) - 1 {
-//     makeSeatID(Js.String2.get(oneOf_qArray, i))
-//   }
-//   tempArr[Belt.Array.length(tempArr) - 1]
-// }
+let makeSeatID = arr => {
+  arr->Belt.Array.reduceWithIndex(0, (acc, x, i) => {
+    let exp = Belt.Array.length(arr) - (i + 1)
+    let increment = Js.Math.pow_int(~base=2, ~exp)
+    acc + x * increment
+  })
+}
+// :: [0,0,1,0,0,0,1,1,1,0] -> [142]
 
-// let makeSeatID = code => {
-//   switch code {
-//   | "F" | "L" =>
-//     Js.Array2.push(tempArr, [0, 127])
-//     max := max.contents - (max.contents - min.contents + 1) / 2
-//   | "B" | "R" => min := (max.contents - min.contents + 1) / 2 + min.contents
-//   | _ => ()
-//   }
-// }
+let convertBinary = char => {
+  switch char {
+  | "B" | "R" => 1
+  | _ => 0
+  }
+}
 
-// let part_one_new = qArray => {
-//   Belt.Array.map(qArray, x => makeSeatArray(x)) // 결과물은 seatID 로 변환된 값들이 담긴 배열이어야 함
-//   Js.log(Js.Math.maxMany_int(seatArray))
-// }
+let convertArray = str => {
+  str->Js.String2.split("")->Belt.Array.map(char => convertBinary(char))
+}
+// :: "BFFFBBFLRR" -> ["B","F","F","F","B"...] -> [1,0,0,0,1,...]
 
-// part_one_new(qArray)
+let makeArray = input => {
+  input->Js.String2.split("\n")
+}
+// :: ["BFFFBBFLRR", "FBBBFFFRLR", ...]
+
+let program = input => {
+  input->makeArray->Belt.Array.map(str => convertArray(str))->Belt.Array.map(arr => makeSeatID(arr))
+}
+
+let answer = (input, f) => {
+  Js.Array.sortInPlaceWith((a, b) => a - b, program(input))->f->Js.log
+}
+
+answer(text, part1)
+answer(text, part2)

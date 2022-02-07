@@ -76,17 +76,13 @@ function answer(bool_arr) {
 }
 
 function splitArray(arr) {
-  var tempArr = [];
-  if (arr.length !== 3) {
-    return [];
-  }
-  var arr_1 = arr[0];
-  var arr_2 = arr[1];
-  var arr_3 = arr[2];
-  tempArr.push(arr_1.split("-"));
-  tempArr.push([arr_2]);
-  tempArr.push(arr_3.split(""));
-  return tempArr;
+  return Belt_Array.mapWithIndex(arr, (function (i, x) {
+                if (i !== 0) {
+                  return x.split("");
+                } else {
+                  return x.split("-");
+                }
+              }));
 }
 
 function makeArray(str) {

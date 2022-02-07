@@ -64,15 +64,12 @@ let answer = bool_arr => {
 }
 
 let splitArray = arr => {
-  let tempArr = []
-  switch arr {
-  | [arr_1, arr_2, arr_3] =>
-    let _ = Js.Array2.push(tempArr, arr_1->Js.String2.split("-"))
-    let _ = Js.Array2.push(tempArr, [arr_2])
-    let _ = Js.Array2.push(tempArr, arr_3->Js.String2.split(""))
-    tempArr
-  | _ => []
-  }
+  arr->Belt.Array.mapWithIndex((i, x) => {
+    switch i {
+    | 0 => x->Js.String2.split("-")
+    | _ => x->Js.String2.split("")
+    }
+  })
 }
 // :: [ "1-3", "a", "abea" ] -> [["1","3"],["a"],["a","b","e","a"]]
 
@@ -81,7 +78,7 @@ let makeArray = str => {
   ->Js.String2.split("\n") // ::String -> Array<String>
   ->Belt.Array.map(s => s->Js.String2.replace(":", "")->Js.String2.split(" ")) // ::Array<Array<String>>
 }
-// :: [[ "1-3", "a", "abcde" ],[ "1-3", "b", "cdefg" ],[ "2-9", "c", "ccccccccc" ]]
+// :: [[ "1-3", "a", "abcde" ],[ "1-3", "b", "cdefg" ],[ "2-9", "c", "ccccccccc" ],...]
 
 let program = (input, f) => {
   makeArray(input)->Belt.Array.map(arr => splitArray(arr))->Belt.Array.map(arr => f(arr))->answer
