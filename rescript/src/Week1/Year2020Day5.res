@@ -54,6 +54,7 @@ let part_two = qArray => {
 // ---------------------------------------------
 // ---------------------------------------------
 // ---------------------------------------------
+
 let part2 = arr => {
   let firstSeat = arr[0] - 1
   arr->Belt.Array.reduce(firstSeat, (prev, next) => {
@@ -70,9 +71,11 @@ let part1 = arr => {
 
 let makeSeatID = arr => {
   arr->Belt.Array.reduceWithIndex(0, (acc, x, i) => {
-    let exp = Belt.Array.length(arr) - (i + 1)
-    let increment = Js.Math.pow_int(~base=2, ~exp)
-    acc + x * increment
+    //   arr->Belt.Array.reduceWithIndex(0, (acc, x, i) => {
+    // let exp = Belt.Array.length(arr) - (i + 1)
+    // let increment = Js.Math.pow_int(~base=2, ~exp)
+    // acc + x * increment
+    acc + x + i
   })
 }
 // :: [0,0,1,0,0,0,1,1,1,0] -> [142]
@@ -99,7 +102,7 @@ let program = input => {
 }
 
 let answer = (input, f) => {
-  Js.Array.sortInPlaceWith((a, b) => a - b, program(input))->f->Js.log
+  ((a, b) => a - b)->Js.Array.sortInPlaceWith(program(input))->f->Js.log
 }
 
 answer(text, part1)

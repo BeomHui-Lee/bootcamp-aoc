@@ -94,3 +94,5 @@ let part2 = input => {
 
 part1(text)
 part2(text)
+
+// type password 와 Belt.option 사용, 파싱

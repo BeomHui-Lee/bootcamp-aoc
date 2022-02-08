@@ -101,9 +101,7 @@ function part1(arr) {
 
 function makeSeatID(arr) {
   return Belt_Array.reduceWithIndex(arr, 0, (function (acc, x, i) {
-                var exp = arr.length - (i + 1 | 0) | 0;
-                var increment = Math.pow(2, exp);
-                return acc + Math.imul(x, increment) | 0;
+                return (acc + x | 0) + i | 0;
               }));
 }
 
